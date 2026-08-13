@@ -58,27 +58,41 @@ class electivesFrame(CTkFrame):
     def __init__(self,master):
         super().__init__(master)
 
-        self.counter = 1
+        self.rowCounter = 3
         self.COLUMNS = ["Electives", "Credits"]
 
         self.grid_columnconfigure((0,1),weight=1)
+        
 
         self.title = CTkLabel(self,text=reverse_by_spaces("קורסי בחירה"))
-        self.title.grid(row=0,column=0,padx=10, pady=(10, 0),sticky="new",columnspan=2)
-
-        self.addRow
+        self.title.grid(row=0,column=0,padx=10, pady=(10, 0),columnspan=2)
 
         self.addRowButton = CTkButton(self,text=reverse_by_spaces("הוסיפי שורה"),command=self.addRow)
-        self.addRowButton.grid(row=0,column=0)
+        self.addRowButton.grid(row=1,column=0,padx=10, pady=(5, 0),columnspan=2)
+
+        self.credHeader = CTkLabel(self,text=reverse_by_spaces("מספר נקז"))
+        self.credHeader.grid(row=2,column=0,padx=(10,0), pady=(5,0),sticky="nsew")
+
+        self.nameHeader = CTkLabel(self,text=reverse_by_spaces("שם הקורס"))
+        self.nameHeader.grid(row=2,column=1,padx=(0,10), pady=(5, 0),sticky="nsew")
+
+        self.addRow()
 
 
     def addRow(self):
-        self.entryName = CTkEntry(self, placeholder_text="name")
-        self.entryName.grid(row=self.counter, column=0)
-        self.entryCredits = CTkEntry(self, placeholder_text="credits")
-        self.entryCredits.grid(row=self.counter, column=1)
-        self.counter += 1
+        self.name_var = StringVar()
+        self.name_var.trace_add("write", self.on_var_change)
 
+        self.entryName = CTkEntry(self, placeholder_text="",textvariable=self.name_var)
+        self.entryName.grid(row=self.rowCounter, column=1,padx=(10,0), pady=(5, 0))
+        self.entryCredits = CTkEntry(self, placeholder_text="")
+        self.entryCredits.grid(row=self.rowCounter, column=0,padx=(0,10), pady=(5, 0))
+        self.rowCounter += 1
+
+    def on_var_change(self, *args):
+        current = self.name_var.get()
+        # e.g. force uppercase as they type
+        self.name_var.set(reverse_by_spaces(current))
 
 
 
