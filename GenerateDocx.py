@@ -54,7 +54,7 @@ def constructFile(student_name, start_date,
     # electives
 
     electivesP = doc.add_paragraph()
-    addRun(electivesP,'קורסי הבחירה בחטיבה 16 נק"ז - סה"כ נק"ז בחירה שהשולמו: ',True,True)
+    addRun(electivesP,'קורסי הבחירה בחטיבה 16 נק"ז - סה"כ נק"ז בחירה שהושלמו: ',True,True)
     addRun(electivesP,f'       {numElectives}       ',underline=True)
 
     #addSpacer(doc)
@@ -109,16 +109,13 @@ def constructFile(student_name, start_date,
         addRun(summary2,f'{counter}.  קורסי בחירה: מספר נק"ז ',font=summaryFont)
         addRun(summary2,f'  {16-numElectives}  ', False,True,font=summaryFont)
 
-
-    if seminar != 0:
+    if seminar == 0:
         counter+=1
         summary3 = doc.add_paragraph()
         addRun(summary3,f'{counter}.  סמינר - 4 נק"ז',font=summaryFont)
 
 
-
-
-    doc.save('demo.docx')
+    doc.save(f'{student_name} סיכום חובות קורסים.docx')
 
 def addElectivesTable(doc,internalElectives, externalElectives):
     rowNum = max(len(internalElectives),len(externalElectives))
@@ -212,7 +209,7 @@ def addSeminar(doc,seminar):
         sem2 = doc.add_paragraph()
         sem2.paragraph_format.right_indent = Inches(0.5)
         addRun(sem2,"☐ ")
-        addRun(sem2,items[2])
+        addRun(sem2,items[1])
     else:
         for i in range(2):
             sem = doc.add_paragraph()
@@ -286,9 +283,9 @@ def make_run_rtl(run, bold=False, underline=False,size=12,font="David"):
         rFonts.set(qn('w:cs'), font)
         rPr.append(rFonts)
 
-constructFile("גיא אברהם","23.8.2024",[1,3],4,[
-        'מושגי יסוד בחקר סכסוכים',
-        'מבנה חברתי של ישראל',
-        'סוגיות בקונפליקטים קבוצתיים וארגוניים',
-        'משא ומתן ככלי לניהול וישוב סכסוכים'
-    ],2,[("בחירה 1","3"),("בחירה 2", "5")],[("בחירה 1","3"),("בחירה 1","3"),("בחירה 1","3")],10)
+#constructFile("גיא אברהם","23.8.2024",[1,3],4,[
+#        'מושגי יסוד בחקר סכסוכים',
+#        'מבנה חברתי של ישראל',
+#        'סוגיות בקונפליקטים קבוצתיים וארגוניים',
+#        'משא ומתן ככלי לניהול וישוב סכסוכים'
+#    ],2,[("בחירה 1","3"),("בחירה 2", "5")],[("בחירה 1","3"),("בחירה 1","3"),("בחירה 1","3")],10)

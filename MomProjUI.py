@@ -20,17 +20,23 @@ class PersonalDetailsSection(QWidget):
         
         self.setLayout(layout)
 
+    def getName(self):
+        return self.name_input.text()
+
+    def getDate(self):
+        return self.start_date_input.text()
+
 class MandatorySection(QWidget):
-    def __init__(self):
+    def __init__(self,mandCourses):
         super().__init__()
 
         label = QLabel("קורסי חובה")
         label.setAlignment(Qt.AlignCenter)
 
-        self.course1 = HebCheckbox("מושגי יסוד בחקר סכסוכים")
-        self.course2 = HebCheckbox("מבנה חברתי של ישראל")
-        self.course3 = HebCheckbox("סוגיות בקונפליקטים קבוצתיים וארגוניים")
-        self.course4 = HebCheckbox("משא ומתן ככלי לניהול וישוב סכסוכים")
+        self.course1 = HebCheckbox(mandCourses[0])
+        self.course2 = HebCheckbox(mandCourses[1])
+        self.course3 = HebCheckbox(mandCourses[2])
+        self.course4 = HebCheckbox(mandCourses[3])
 
         layout = QVBoxLayout()
         layout.addWidget(label)
@@ -40,6 +46,30 @@ class MandatorySection(QWidget):
         layout.addWidget(self.course4)
 
         self.setLayout(layout)
+
+    def getChecked(self):
+        checkedCourses = []
+        if self.course1.isChecked():
+            checkedCourses.append(0)
+        if self.course2.isChecked():
+            checkedCourses.append(1)
+        if self.course3.isChecked():
+            checkedCourses.append(2)
+        if self.course4.isChecked():
+            checkedCourses.append(3)
+        return checkedCourses
+
+    def getCredMandatory(self):
+        counter = 0
+        if self.course1.isChecked():
+            counter+=1
+        if self.course2.isChecked():
+            counter+=1
+        if self.course3.isChecked():
+            counter+=1
+        if self.course4.isChecked():
+            counter+=1
+        return counter*2
 
 class SeminarSection(QWidget):
     def __init__(self):
@@ -60,6 +90,14 @@ class SeminarSection(QWidget):
         layout.addWidget(self.semi2)
 
         self.setLayout(layout)
+
+    def getSeminar(self):
+        if self.semi1.isChecked():
+            return 1
+        elif self.semi2.isChecked():
+            return 2
+        else:
+            return 0
 
 class ElectivesSection(QWidget):
     def __init__(self, text, num):
@@ -88,6 +126,22 @@ class ElectivesSection(QWidget):
         self.electiveLines.append(row)
         self.main_layout.insertWidget(self.main_layout.count() - 1, row)
 
+    def getElectives(self):
+        electives = []
+        for line in self.electiveLines:
+            if line.getCourseName() != "" and line.getCredits() != "":
+                electives.append((line.getCourseName(),line.getCredits()))
+
+        return electives
+
+    def getElectiveCredit(self):
+        sum = 0
+        for line in self.electiveLines:
+            if line.getCourseName() != "" and line.getCredits() != "":
+                sum += int (line.getCredits())
+        return sum
+
+
 class ElectiveLine(QWidget):
     def __init__(self):
         super().__init__()
@@ -95,14 +149,20 @@ class ElectiveLine(QWidget):
         layout = QHBoxLayout()
         layout.setContentsMargins(0,0,0,0)
 
-        course_name = QLineEdit(placeholderText="שם הקורס")
-        credits = QLineEdit(placeholderText="נק״ז")
+        self.course_name = QLineEdit(placeholderText="שם הקורס")
+        self.credits = QLineEdit(placeholderText="נק״ז")
 
-        layout.addWidget(credits, 1)
-        layout.addWidget(course_name, 5)
+        layout.addWidget(self.credits, 1)
+        layout.addWidget(self.course_name, 5)
 
 
         self.setLayout(layout)
+
+    def getCourseName(self):
+        return self.course_name.text()
+
+    def getCredits(self):
+        return self.credits.text()
 
 
 class HebCheckbox(QCheckBox):
