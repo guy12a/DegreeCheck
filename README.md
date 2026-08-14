@@ -1,4 +1,4 @@
-# Mom's App
+# DegreeCheck
 
 A Python desktop application for managing and checking course requirements for the **Conflict Management and Resolution** track.
 
