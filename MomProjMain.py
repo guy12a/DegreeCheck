@@ -43,3 +43,4 @@ window = MainWindow() #manages the UI - holds all other widgets
 window.show()
 
 app.exec()
+
